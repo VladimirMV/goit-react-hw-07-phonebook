@@ -1,13 +1,23 @@
-import { PropagateLoader } from 'react-spinners';
-import './Loader.css';
+import { RotatingTriangles } from 'react-loader-spinner';
 
-const Loader = () => {
-  console.log('Лоудер стартонул');
+export function Loader() {
   return (
-    <div className="Spinner">
-      <PropagateLoader size="15px" color="rgb(225, 212, 167)" loading={true} />
-    </div>
+    <RotatingTriangles
+      height="180"
+      width="180"
+      colors={['#778d45', ' #566573', '#212121']}
+      ariaLabel="rotating-triangels-loading"
+      radius="12.5"
+      wrapperStyle={{
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+      }}
+      wrapperClass=""
+      visible={true}
+    />
   );
-};
+}
 
 export default Loader;

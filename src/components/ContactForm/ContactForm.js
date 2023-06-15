@@ -20,7 +20,6 @@ export const ContactForm = () => {
     dispatch(addContact(data));
   };
   const onSubmitHandler = values => {
-    console.log('Вызываю onAddContact', values);
     onAddContact({ ...values });
     reset();
   };

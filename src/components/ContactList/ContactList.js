@@ -2,10 +2,6 @@ import s from './ContactList.module.css';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-// toastify
-import { toast } from 'react-toastify';
-import { toastifyOptions } from 'utils/toastifyOptions';
-
 // redux
 import { fetchContacts } from 'redux/contacts/contacts-operations';
 import {
@@ -16,11 +12,11 @@ import {
   selectFilter,
 } from 'redux/selectors';
 
-// import Loader from 'components/Loader/Loader';
+import Loader from 'components/Loader/Loader';
 import { deleteContact } from 'redux/contacts/contacts-operations';
 
 function ContactList() {
-  // const contacts = useSelector(selectContacts);
+  const contacts = useSelector(selectContacts);
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
   const filter = useSelector(selectFilter);
@@ -35,7 +31,7 @@ function ContactList() {
 
   const getFilteredContacts = data => {
     if (filter.toLowerCase() && !data.length) {
-      toast.warn(`No contacts matching your request`, toastifyOptions);
+      // alert(`No contacts matching your request`);
     }
     return data;
   };
@@ -48,24 +44,29 @@ function ContactList() {
 
   return (
     <>
+      {isLoading && contacts?.length === 0 && <Loader />}
       {error && !isLoading && <div>Ooops, error...</div>}
-
-      <ul className={s.list}>
-        {filteredContacts.map(({ name, number, id }) => {
-          return (
-            <li className={s.item} key={id}>
-              <p className={s.info}>
-                {name}: {number}
-              </p>
-              <button
-                className={s.btn}
-                type="button"
-                onClick={() => onDeleteContact(id)}
-              />
-            </li>
-          );
-        })}
-      </ul>
+      {!filteredContacts?.length && !error && !isLoading && (
+        <div className={s.error}> Contacts not found</div>
+      )}
+      {!error && !isLoading && filteredContacts?.length > 0 && (
+        <ul className={s.list}>
+          {filteredContacts.map(({ name, number, id }) => {
+            return (
+              <li className={s.item} key={id}>
+                <p className={s.info}>
+                  {name}: {number}
+                </p>
+                <button
+                  className={s.btn}
+                  type="button"
+                  onClick={() => onDeleteContact(id)}
+                />
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </>
   );
 }
