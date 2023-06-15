@@ -14,11 +14,3 @@ export const addContact = data => {
   console.log('data from API', data);
   return contactsInstance.post('/', data);
 };
-
-export const editContact = data => {
-  return contactsInstance.put(`/${data.id}`, {
-    avatar: data.avatar,
-    name: data.name,
-    number: data.number,
-  });
-};

@@ -4,7 +4,6 @@ import {
   fetchContacts,
   addContact,
   deleteContact,
-  changeContact,
 } from './contacts-operations';
 
 const initialState = {
@@ -13,12 +12,7 @@ const initialState = {
   error: null,
 };
 
-const customArrThunks = [
-  fetchContacts,
-  addContact,
-  deleteContact,
-  changeContact,
-];
+const customArrThunks = [fetchContacts, addContact, deleteContact];
 
 const status = {
   pending: 'pending',
@@ -55,13 +49,6 @@ const handleFulfilledDelete = (state, { payload }) => {
   state.items = state.items.filter(({ id }) => id !== payload);
 };
 
-const handleFulfilledChange = (state, { payload }) => {
-  const index = state.items.findIndex(({ id }) => id === payload.id);
-  if (index !== -1) {
-    state.items[index] = payload;
-  }
-};
-
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
@@ -72,7 +59,6 @@ const contactsSlice = createSlice({
       .addCase(fetchContacts.fulfilled, handleFulfilledGet)
       .addCase(addContact.fulfilled, handleFulfilledAdd)
       .addCase(deleteContact.fulfilled, handleFulfilledDelete)
-      .addCase(changeContact.fulfilled, handleFulfilledChange)
       .addMatcher(isAnyOf(...fn(pending)), handlePending)
       .addMatcher(isAnyOf(...fn(fulfilled)), handleFulfilled)
       .addMatcher(isAnyOf(...fn(rejected)), handleRejected);
